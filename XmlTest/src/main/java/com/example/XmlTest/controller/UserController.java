@@ -2,7 +2,9 @@ package com.example.XmlTest.controller;
 
 import com.example.XmlTest.domain.User;
 import com.example.XmlTest.service.IUserservice;
+import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -14,13 +16,19 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 public class UserController {
 
+    private static final Logger LOGGER = Logger.getLogger(UserController.class);
+
+
     @Autowired
     private IUserservice userservice;
 
-    @RequestMapping("/user")
-    public String getAllUser(){
+    @RequestMapping("/user/{id}")
+    public String getAllUser(@PathVariable("id") Long id) {
 
-        User find = userservice.findOneById(1L);
+        User find = userservice.findOneById(id);
+
+
+        LOGGER.info("查询用户:" + find.toString());
 
         return find.toString();
 

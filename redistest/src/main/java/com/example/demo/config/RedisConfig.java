@@ -7,9 +7,13 @@ import org.springframework.cache.CacheManager;
 import org.springframework.cache.annotation.EnableCaching;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.core.io.ClassPathResource;
+import org.springframework.core.io.Resource;
 import org.springframework.data.redis.cache.RedisCacheManager;
 import org.springframework.data.redis.connection.RedisConnectionFactory;
 import org.springframework.data.redis.core.RedisTemplate;
+import org.springframework.data.redis.core.script.DefaultRedisScript;
+import org.springframework.data.redis.core.script.RedisScript;
 import org.springframework.data.redis.serializer.Jackson2JsonRedisSerializer;
 import org.springframework.data.redis.serializer.StringRedisSerializer;
 
@@ -22,6 +26,17 @@ import org.springframework.data.redis.serializer.StringRedisSerializer;
 @EnableCaching
 public class RedisConfig {
 
+
+    @Bean
+    public RedisScript<Integer> defaultRedisScript(){
+        DefaultRedisScript<Integer> redisScript = new DefaultRedisScript();
+        redisScript.setLocation(new ClassPathResource("lua/test.lua"));
+        redisScript.setResultType(Integer.class);
+        return redisScript;
+    }
+
+
+
     @Bean
     public RedisTemplate getRedisTemplate(RedisConnectionFactory connectionFactory) {
 
@@ -30,8 +45,9 @@ public class RedisConfig {
         //将刚才的redis连接工厂设置到模板类中
         template.setConnectionFactory(connectionFactory);
 
+        template.setValueSerializer(new StringRedisSerializer());
 
-        // 设置key的序列化器
+        /*// 设置key的序列化器
         template.setKeySerializer(new StringRedisSerializer());
         // 设置value的序列化器
         //使用Jackson 2，将对象序列化为JSON
@@ -41,7 +57,7 @@ public class RedisConfig {
         om.setVisibility(PropertyAccessor.ALL, JsonAutoDetect.Visibility.ANY);
         om.enableDefaultTyping(ObjectMapper.DefaultTyping.NON_FINAL);
         jackson2JsonRedisSerializer.setObjectMapper(om);
-        template.setValueSerializer(jackson2JsonRedisSerializer);
+        template.setValueSerializer(jackson2JsonRedisSerializer);*/
         return template;
     }
 

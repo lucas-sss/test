@@ -31,10 +31,10 @@ public class RedisConfig {
     }
 
     @Bean("lock")
-    public RedisScript<Integer> lockRedisScript() {
-        DefaultRedisScript<Integer> redisScript = new DefaultRedisScript();
+    public RedisScript<Boolean> lockRedisScript() {
+        DefaultRedisScript<Boolean> redisScript = new DefaultRedisScript();
         redisScript.setLocation(new ClassPathResource("lua/acquire_lock.lua"));
-        redisScript.setResultType(Integer.class);
+        redisScript.setResultType(Boolean.class);
         return redisScript;
     }
 

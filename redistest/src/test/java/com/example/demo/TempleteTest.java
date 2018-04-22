@@ -7,10 +7,13 @@ import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.data.redis.core.RedisTemplate;
+import org.springframework.data.redis.core.script.RedisScript;
 import org.springframework.data.redis.core.types.Expiration;
 import org.springframework.data.repository.cdi.Eager;
 import org.springframework.test.context.junit4.SpringRunner;
 
+import javax.annotation.Resource;
+import java.util.Collections;
 import java.util.Random;
 import java.util.concurrent.CountDownLatch;
 
@@ -31,7 +34,10 @@ public class TempleteTest {
     private RedisLock lock;
 
 
-    int num = 5;
+    @Resource(name = "lock")
+    private RedisScript<Boolean> redisScript;
+
+    int num = 100;
 
     @Test
     public void basicTest() {
@@ -46,24 +52,17 @@ public class TempleteTest {
     @Test
     public void lockTest() throws Exception {
 
-        CountDownLatch latch = new CountDownLatch(1);
-//        int num = 5;
-
         for (int i = 0; i < 30; i++) {
 
-//            new Thread(new LockTestTask(latch, num, lock)).start();
             int j = i;
             new Thread(() -> {
-//                try {
-//                    latch.wait();
-//                }catch (InterruptedException e){
-//                    e.printStackTrace();
-//                }
                 while (true){
-                    if (lock.lock("test", 1000L) != null){
+                    Long lockTime;
+                    if ((lockTime = lock.lock("lock_t", 500L)) != null){
                         if (num > 0){
-                            System.out.println("第" + j + "个线程:" + (--num));
+                            System.out.println("+++++++++++++++++++++++++++++++++++++++++++++++++++++第" + j + "个线程:" + (--num));
                         }
+                        lock.unlok("lock_t", lockTime);
                     }
                     try {
                         Thread.sleep(new Random().nextInt(3) * 300 + 500);
@@ -74,7 +73,7 @@ public class TempleteTest {
             }).start();
 
         }
-        Thread.currentThread().wait();
+        Thread.sleep(50000);
     }
 
     @Test
@@ -95,4 +94,16 @@ public class TempleteTest {
 
         Thread.sleep(50000);
     }
+
+
+    @Test
+    public void luaTest() throws Exception {
+        long time = System.currentTimeMillis() + 1000L;
+        Boolean execute = (Boolean) redisTemplate.execute(redisScript, Collections.singletonList("lock_test"), 100);
+
+        System.out.println(execute);
+
+    }
+
+
 }

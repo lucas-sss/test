@@ -1,12 +1,8 @@
 package com.example.demo.lock;
 
-import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.redis.core.RedisCallback;
 import org.springframework.data.redis.core.RedisTemplate;
-import org.springframework.data.redis.serializer.JdkSerializationRedisSerializer;
 import org.springframework.stereotype.Component;
-import redis.clients.jedis.Jedis;
 
 import java.util.Random;
 import java.util.concurrent.TimeUnit;
@@ -27,16 +23,16 @@ public class RedisLock {
     private RedisTemplate<String, Object> redisTemplate;
 
 
-    public Long lock(String key, Long timeout){
-
+    public Long lock(String key, Long timeout) {
+        timeout = timeout == null ? TIMEOUT : timeout;
         System.out.println("开始执行加锁：" + Thread.currentThread().getName());
 
         Long lockTimeout = System.currentTimeMillis() + LOCK_TIME;
-        Long acquireTimeout = System.currentTimeMillis() + LOCK_TIME;
+        Long acquireTimeout = System.currentTimeMillis() + timeout;
 
-        while (System.currentTimeMillis() < acquireTimeout){
+        while (System.currentTimeMillis() < acquireTimeout) {
             //成功获取锁
-            if (redisTemplate.opsForValue().setIfAbsent(key, String.valueOf(lockTimeout))){
+            if (redisTemplate.opsForValue().setIfAbsent(key, String.valueOf(lockTimeout))) {
                 System.out.println("线程：" + Thread.currentThread().getName() + "，加锁成功");
                 /**
                  * 设置超时时间，释放内存。此操作和前面获取锁操作不是原子的
@@ -50,16 +46,17 @@ public class RedisLock {
             Object o = redisTemplate.opsForValue().get(key);
             Long old_lock_time = o == null ? null : Long.valueOf((String) o);
 
-            if (old_lock_time != null && old_lock_time < System.currentTimeMillis()){
-                Long replace_lock_time = Long.valueOf((String)  redisTemplate.opsForValue().getAndSet(key, lockTimeout + ""));
-                if (replace_lock_time != null && old_lock_time.equals(replace_lock_time)){
-                    System.out.println("线程：" + Thread.currentThread().getName() + "，加锁成功");
+            if (old_lock_time != null && old_lock_time < System.currentTimeMillis()) {
+                Object replaceStr = redisTemplate.opsForValue().getAndSet(key, lockTimeout + "");
+                Long replace_lock_time = replaceStr == null ? null : Long.valueOf((String) replaceStr);
+                if (replace_lock_time != null && old_lock_time.equals(replace_lock_time)) {
+                    System.out.println("-----------------线程：" + Thread.currentThread().getName() + "，加锁成功");
                     return lockTimeout;
                 }
             }
 
             try {
-                int sleep = random.nextInt(2) * 50 + 50;
+                int sleep = random.nextInt(3) * 50 + 50;
                 System.out.println(Thread.currentThread().getName() + "等待加锁，随机睡眠" + sleep + "毫秒");
                 //睡眠100毫秒
                 Thread.sleep(sleep);
@@ -72,12 +69,13 @@ public class RedisLock {
         return null;
     }
 
-    public boolean unlok(String key, Long time){
-        Long lockTime = Long.valueOf((String) redisTemplate.opsForValue().get(key));
+    public boolean unlok(String key, Long time) {
+        Object o = redisTemplate.opsForValue().get(key);
+        Long lockTime = o == null ? null : Long.valueOf((String) o);
         //仍然持有锁的情况下
-        if ( lockTime.equals(lockTime)){
+        if (time != null && time.equals(lockTime)) {
             redisTemplate.delete(key);
-            System.out.println("线程：" + Thread.currentThread().getName() + "，释放加锁");
+            System.out.println("--------------------线程：" + Thread.currentThread().getName() + "，释放锁");
             return true;
         }
         return false;

@@ -10,4 +10,6 @@ import com.example.remotedebug.model.User;
 public interface IUserService {
 
     User findOneById(Integer id);
+
+    int save(User user);
 }

@@ -12,5 +12,5 @@ import org.springframework.stereotype.Repository;
 public interface IUserDao {
     User findOneById(Integer id);
 
-    void save(User user);
+    int save(User user);
 }

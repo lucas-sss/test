@@ -5,6 +5,6 @@
     SELECT * FROM `t_user` WHERE `id` = #{id}
   </select>
   <insert id="save" parameterType="com.example.remotedebug.model.User">
-    INSERT INTO `t_user`(`name`, `age`)  VALUES (#{name}, ##{age})
+    INSERT INTO `t_user`(`name`, `age`)  VALUES (#{name}, #{age})
   </insert>
 </mapper>

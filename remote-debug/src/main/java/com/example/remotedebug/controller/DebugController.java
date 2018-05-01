@@ -24,12 +24,6 @@ public class DebugController {
     @RequestMapping("/testRemoteDebug/{id}")
     public String testRemoteDebug(@PathVariable("id")Integer id) {
 
-//        User find = new User();
-//        find.setId(new Random().nextInt(10000));
-//        find.setName("小明" + new Random().nextInt(1000));
-//        find.setAge(5 + new Random().nextInt(5));
-//        return  find.toString();
-
         User user = userService.findOneById(id);
         if (user == null){
             return "无数据";
@@ -37,4 +31,13 @@ public class DebugController {
         return user.toString();
     }
 
+
+    @RequestMapping("/save/{name}/{age}")
+    public String saveUser(@PathVariable("name")String name, @PathVariable("age")Integer age){
+        User save = new User();
+        save.setName(name);
+        save.setAge(age);
+        userService.save(save);
+        return "已保存：" + save.toString();
+    }
 }

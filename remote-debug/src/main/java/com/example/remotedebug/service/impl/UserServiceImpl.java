@@ -19,10 +19,11 @@ public class UserServiceImpl implements IUserService {
 
     @Override
     public User findOneById(Integer id) {
-//        User find = new User();
-//        find.setId(new Random().nextInt(10000));
-//        find.setName("小明" + new Random().nextInt(1000));
-//        find.setAge(5 + new Random().nextInt(5));
         return null == id ? null : userDao.findOneById(id);
+    }
+
+    @Override
+    public int save(User user) {
+        return userDao.save(user);
     }
 }

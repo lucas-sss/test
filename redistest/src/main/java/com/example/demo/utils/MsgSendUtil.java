@@ -1,5 +1,7 @@
 package com.example.demo.utils;
 
+import io.netty.buffer.ByteBuf;
+import io.netty.buffer.Unpooled;
 import io.netty.channel.ChannelHandlerContext;
 
 /**
@@ -25,7 +27,11 @@ public class MsgSendUtil {
 
         try {
             if (channelHandlerContext != null && !connecting){
-                channelHandlerContext.writeAndFlush(msg);
+
+                byte[] req = (msg.toString() + System.getProperty("line.separator")).getBytes();
+                ByteBuf bf = Unpooled.buffer(req.length);
+                bf.writeBytes(req);
+                channelHandlerContext.writeAndFlush(bf);
                 return null;
             }
         }catch (Exception e){

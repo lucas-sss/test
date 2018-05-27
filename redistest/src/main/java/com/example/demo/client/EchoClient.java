@@ -1,8 +1,6 @@
 package com.example.demo.client;
 
-import com.example.demo.server.EchoServerHandler;
 import io.netty.bootstrap.Bootstrap;
-import io.netty.bootstrap.ServerBootstrap;
 import io.netty.channel.ChannelFuture;
 import io.netty.channel.ChannelInitializer;
 import io.netty.channel.ChannelOption;
@@ -60,7 +58,9 @@ public class EchoClient {
 
     @PostConstruct
     public void init(){
-        new EchoClient().connect();
+        new Thread(() -> {
+            new EchoClient().connect();
+        }).start();
     }
 
     public static void main(String[] args) {

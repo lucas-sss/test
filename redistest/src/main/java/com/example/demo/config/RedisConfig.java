@@ -1,5 +1,8 @@
 package com.example.demo.config;
 
+import com.fasterxml.jackson.annotation.JsonAutoDetect;
+import com.fasterxml.jackson.annotation.PropertyAccessor;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.cache.CacheManager;
 import org.springframework.cache.annotation.EnableCaching;
 import org.springframework.context.annotation.Bean;
@@ -10,6 +13,7 @@ import org.springframework.data.redis.connection.RedisConnectionFactory;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.data.redis.core.script.DefaultRedisScript;
 import org.springframework.data.redis.core.script.RedisScript;
+import org.springframework.data.redis.serializer.Jackson2JsonRedisSerializer;
 import org.springframework.data.redis.serializer.StringRedisSerializer;
 
 /**
@@ -39,17 +43,14 @@ public class RedisConfig {
     }
 
 
-    @Bean
+    @Bean(name = "myRedisTemplate")
     public RedisTemplate getRedisTemplate(RedisConnectionFactory connectionFactory) {
-
         //创建一个模板类
         RedisTemplate<String, Object> template = new RedisTemplate<>();
         //将刚才的redis连接工厂设置到模板类中
         template.setConnectionFactory(connectionFactory);
-
-        template.setValueSerializer(new StringRedisSerializer());
-
-        /*// 设置key的序列化器
+//        template.setValueSerializer(new StringRedisSerializer());
+        // 设置key的序列化器
         template.setKeySerializer(new StringRedisSerializer());
         // 设置value的序列化器
         //使用Jackson 2，将对象序列化为JSON
@@ -59,7 +60,8 @@ public class RedisConfig {
         om.setVisibility(PropertyAccessor.ALL, JsonAutoDetect.Visibility.ANY);
         om.enableDefaultTyping(ObjectMapper.DefaultTyping.NON_FINAL);
         jackson2JsonRedisSerializer.setObjectMapper(om);
-        template.setValueSerializer(jackson2JsonRedisSerializer);*/
+        template.setValueSerializer(jackson2JsonRedisSerializer);
+        template.setHashValueSerializer(jackson2JsonRedisSerializer);
         return template;
     }
 

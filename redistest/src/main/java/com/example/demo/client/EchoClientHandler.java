@@ -20,8 +20,6 @@ public class EchoClientHandler extends ChannelHandlerAdapter {
 
         MsgSendUtil.setContext(ctx);
 
-
-
         ByteBuf msg = null;
         for (int i = 0; i < 100; i++) {
 

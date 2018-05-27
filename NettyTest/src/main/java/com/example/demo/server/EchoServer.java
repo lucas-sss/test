@@ -12,11 +12,14 @@ import io.netty.channel.socket.nio.NioSocketChannel;
 import io.netty.handler.codec.LineBasedFrameDecoder;
 import io.netty.handler.codec.string.StringDecoder;
 
+import javax.annotation.PostConstruct;
+
 /**
  * @author liuwei 1215946336@qq.com
  * @version 1.0
  * @date 2018/4/5 0005
  */
+
 public class EchoServer {
 
     public void bind(){
@@ -52,18 +55,12 @@ public class EchoServer {
         }
     }
 
-
-    public void send(){
-        channel.write(new Object());
-        channel.flush();
+    @PostConstruct
+    public void init(){
+        new EchoServer().bind();
     }
 
     public static void main(String[] args) {
-
         new EchoServer().bind();
-
-
-
-
     }
 }

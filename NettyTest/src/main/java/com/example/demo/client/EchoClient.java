@@ -12,12 +12,16 @@ import io.netty.channel.socket.SocketChannel;
 import io.netty.channel.socket.nio.NioSocketChannel;
 import io.netty.handler.codec.LineBasedFrameDecoder;
 import io.netty.handler.codec.string.StringDecoder;
+import org.springframework.stereotype.Component;
+
+import javax.annotation.PostConstruct;
 
 /**
  * @author liuwei 1215946336@qq.com
  * @version 1.0
  * @date 2018/4/5 0005
  */
+@Component
 public class EchoClient {
 
 
@@ -38,6 +42,7 @@ public class EchoClient {
                                     .addLast(new LineBasedFrameDecoder(1024))
                                     .addLast(new StringDecoder())
                                     .addLast(new EchoClientHandler());
+
                         }
                     });
 
@@ -53,9 +58,12 @@ public class EchoClient {
     }
 
 
+    @PostConstruct
+    public void init(){
+        new EchoClient().connect();
+    }
+
     public static void main(String[] args) {
         new EchoClient().connect();
-
-
     }
 }

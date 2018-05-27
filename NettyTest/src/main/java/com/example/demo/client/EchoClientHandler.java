@@ -1,5 +1,6 @@
 package com.example.demo.client;
 
+import com.example.demo.utils.MsgSendUtil;
 import io.netty.buffer.ByteBuf;
 import io.netty.buffer.Unpooled;
 import io.netty.channel.ChannelHandlerAdapter;
@@ -16,6 +17,10 @@ public class EchoClientHandler extends ChannelHandlerAdapter {
 
     @Override
     public void channelActive(ChannelHandlerContext ctx) throws Exception {
+
+        MsgSendUtil.setContext(ctx);
+
+
 
         ByteBuf msg = null;
         for (int i = 0; i < 100; i++) {

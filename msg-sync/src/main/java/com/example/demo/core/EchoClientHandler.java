@@ -1,8 +1,5 @@
 package com.example.demo.core;
 
-import com.example.demo.utils.MsgSendUtil;
-import io.netty.buffer.ByteBuf;
-import io.netty.buffer.Unpooled;
 import io.netty.channel.ChannelHandlerAdapter;
 import io.netty.channel.ChannelHandlerContext;
 
@@ -17,17 +14,6 @@ public class EchoClientHandler extends ChannelHandlerAdapter {
 
     @Override
     public void channelActive(ChannelHandlerContext ctx) throws Exception {
-
-       /* MsgSendUtil.setContext(ctx);
-
-        ByteBuf msg = null;
-        for (int i = 0; i < 100; i++) {
-
-            req = ("我发送消息" + i + System.getProperty("line.separator")).getBytes();
-            msg = Unpooled.buffer(req.length);
-            msg.writeBytes(req);
-            ctx.writeAndFlush(msg);
-        }*/
 
     }
 

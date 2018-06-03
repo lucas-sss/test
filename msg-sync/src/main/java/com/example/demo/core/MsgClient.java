@@ -1,6 +1,5 @@
 package com.example.demo.core;
 
-import com.example.demo.utils.MsgSendUtil;
 import com.example.demo.utils.MsgUtil;
 import io.netty.bootstrap.Bootstrap;
 import io.netty.channel.*;
@@ -12,8 +11,6 @@ import io.netty.handler.codec.string.StringDecoder;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.PostConstruct;
-import java.util.concurrent.locks.Lock;
-import java.util.concurrent.locks.ReentrantLock;
 
 /**
  * @author liuwei 1215946336@qq.com
@@ -54,13 +51,11 @@ public class MsgClient {
                     }
                 });
 
-        Thread thread = new Thread(() -> {
+        new Thread(() -> {
 
             while (true){
-                System.out.println("循环进行时");
                 //线程链接成功则进行等待
                 if (channel != null && channel.isActive()){
-                    System.out.println("即将进行锁判断");
                     synchronized (lock){
                         try {
                             lock.wait();
@@ -79,17 +74,7 @@ public class MsgClient {
                 }
                 System.out.println("进行重连啦");
             }
-        });
-
-        thread.start();
-
-        /*try {
-
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }finally {
-            group.shutdownGracefully();
-        }*/
+        }).start();
     }
 
 

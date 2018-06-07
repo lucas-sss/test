@@ -9,7 +9,7 @@
     </appender>
     <appender name="baselog"
               class="ch.qos.logback.core.rolling.RollingFileAppender">
-        <File>logs/mobile-risk.log</File>
+        <File>logs/sys.log</File>
         <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
             <fileNamePattern>logs/sys.log.%d.%i</fileNamePattern>
             <timeBasedFileNamingAndTriggeringPolicy  class="ch.qos.logback.core.rolling.SizeAndTimeBasedFNATP">

@@ -8,5 +8,18 @@ public class NettyTestApplication {
 
 	public static void main(String[] args) {
 		SpringApplication.run(NettyTestApplication.class, args);
+
+
+
+
+
+
+
+
+
+
+
+
+
 	}
 }

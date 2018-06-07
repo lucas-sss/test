@@ -1,9 +1,9 @@
 package com.example.demo.client;
 
+import com.example.demo.common.Constants;
+import com.example.demo.msg.BusinessMsg;
 import com.example.demo.msg.RegisteMsg;
-import com.example.demo.utils.MsgSendUtil;
-import io.netty.buffer.ByteBuf;
-import io.netty.buffer.Unpooled;
+import com.example.demo.utils.ClientCache;
 import io.netty.channel.ChannelHandlerAdapter;
 import io.netty.channel.ChannelHandlerContext;
 
@@ -12,34 +12,28 @@ import io.netty.channel.ChannelHandlerContext;
  * @version 1.0
  * @date 2018/4/5 0005
  */
-public class EchoClientHandler extends ChannelHandlerAdapter {
-
-    private byte[] req = null;
+public class MsgClientHandler extends ChannelHandlerAdapter {
 
     @Override
     public void channelActive(ChannelHandlerContext ctx) throws Exception {
-
-        MsgSendUtil.setContext(ctx);
+        String lable = Constants.clientLable.incrementAndGet() + "";
+        ClientCache.add(lable, ctx.channel());
 
         RegisteMsg registeMsg = new RegisteMsg();
+        registeMsg.setMsgBody(lable);
 
-        registeMsg.setMsgBody("channel_lable");
-
-
-        req = ("channel_lable" + System.getProperty("line.separator")).getBytes();
-        ByteBuf msg = Unpooled.buffer(req.length);
-        msg.writeBytes(req);
-        ctx.writeAndFlush(msg);
+//        byte[] req = ("channel_lable" + System.getProperty("line.separator")).getBytes();
+//        ByteBuf msg = Unpooled.buffer(req.length);
+//        msg.writeBytes(req);
+        ctx.writeAndFlush(registeMsg);
     }
 
 
     @Override
     public void channelRead(ChannelHandlerContext ctx, Object msg) throws Exception {
-
-        String resp = (String) msg;
-
-        System.out.println("client recive body:" + resp);
-//        ctx.close();
+        System.out.println(ctx.toString());
+        BusinessMsg businessMsg = (BusinessMsg) msg;
+        System.out.println("接受消息类型：" + businessMsg.getMsgType() + ",消息体：" + businessMsg.getMsgBody());
     }
 
     @Override

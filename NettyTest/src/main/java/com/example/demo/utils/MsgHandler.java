@@ -21,10 +21,10 @@ public class MsgHandler {
 
         try {
             if (channel != null && channel.isActive()){
-                byte[] biteMsg = (msg.toString() + System.getProperty("line.separator")).getBytes();
-                ByteBuf buf = Unpooled.buffer(biteMsg.length);
-                buf.writeBytes(biteMsg);
-                channel.writeAndFlush(buf);
+//                byte[] biteMsg = (msg.toString() + System.getProperty("line.separator")).getBytes();
+//                ByteBuf buf = Unpooled.buffer(biteMsg.length);
+//                buf.writeBytes(biteMsg);
+                channel.writeAndFlush(msg);
                 return null;
             }
         }catch (Exception e){
@@ -38,11 +38,11 @@ public class MsgHandler {
         try {
 
             if (ch != null && ch.isActive()){
-                byte[] biteMsg = (msg.toString() + System.getProperty("line.separator")).getBytes();
+//                byte[] biteMsg = (msg.toString() + System.getProperty("line.separator")).getBytes();
 //                ByteBuf buf = Unpooled.buffer(biteMsg.length);
 //                buf.writeBytes(biteMsg);
 
-                ch.writeAndFlush(biteMsg);
+                ch.writeAndFlush(msg);
                 return null;
             }
         }catch (Exception e){

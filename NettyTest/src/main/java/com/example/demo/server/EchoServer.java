@@ -1,5 +1,7 @@
 package com.example.demo.server;
 
+import com.example.demo.core.coder.MsgJsonDecoder;
+import com.example.demo.core.coder.MsgJsonEncoder;
 import io.netty.bootstrap.ServerBootstrap;
 import io.netty.channel.ChannelFuture;
 import io.netty.channel.ChannelInitializer;
@@ -37,15 +39,17 @@ public class EchoServer {
                         @Override
                         protected void initChannel(SocketChannel socketChannel) throws Exception {
                             socketChannel.pipeline()
-                                    .addLast(new LineBasedFrameDecoder(1024))
-                                    .addLast(new StringDecoder())
+//                                    .addLast(new LineBasedFrameDecoder(1024))
+//                                    .addLast(new StringDecoder())
+                                    .addLast(new MsgJsonDecoder())
+                                    .addLast(new MsgJsonEncoder())
                                     .addLast(new EchoServerHandler());
                         }
                     });
 
-            ChannelFuture f = sb.bind(8080).sync();
+            ChannelFuture f = sb.bind(9001).sync();
 
-            f.channel().closeFuture().sync();
+//            f.channel().closeFuture().sync();
 
         } catch (InterruptedException e) {
             e.printStackTrace();

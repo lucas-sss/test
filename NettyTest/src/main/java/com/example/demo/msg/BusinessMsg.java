@@ -5,15 +5,15 @@ package com.example.demo.msg;
  * @version 1.0
  * @date 2018/6/5
  */
-public abstract class BusinessMsg extends BaseMsg implements MsgInvoker {
+public class BusinessMsg extends BaseMsg implements MsgInvoker {
 
-    private MsgTypeEnum msgType;
+    private String msgType;
 
-    public MsgTypeEnum getMsgType() {
+    public String getMsgType() {
         return msgType;
     }
 
-    public void setMsgType(MsgTypeEnum msgType) {
+    public void setMsgType(String msgType) {
         this.msgType = msgType;
     }
 
@@ -22,5 +22,7 @@ public abstract class BusinessMsg extends BaseMsg implements MsgInvoker {
      *
      */
     @Override
-    public abstract void invoke();
+    public void invoke(){
+
+    }
 }

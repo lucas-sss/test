@@ -28,8 +28,9 @@ public class MsgJsonDecoder extends ByteToMessageDecoder {
                 byteBuf.readByte();
                 byte[] bs = new byte[bytes - 1];
                 byteBuf.readBytes(bs, 0, bytes - 1);
-
-                BusinessMsg businessMsg = objectMapper.readValue(bs, BusinessMsg.class);
+                String s = new String(bs, "UTF-8");
+//                System.out.println("解码后字符串：" + s);
+                BusinessMsg businessMsg = objectMapper.readValue(s, BusinessMsg.class);
 
                 out.add(businessMsg);
                 byteBuf.readByte();

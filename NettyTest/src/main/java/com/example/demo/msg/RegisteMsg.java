@@ -1,5 +1,6 @@
 package com.example.demo.msg;
 
+import com.example.demo.common.MsgType;
 import com.example.demo.core.ChannelContext;
 import io.netty.channel.Channel;
 
@@ -16,7 +17,7 @@ public class RegisteMsg extends BusinessMsg {
 
     public RegisteMsg() {
         super();
-        super.setMsgType(MsgTypeEnum.SERVER_REGISTE);
+        super.setMsgType(MsgType.REGISTER);
     }
 
     public void setChannel(Channel channel) {

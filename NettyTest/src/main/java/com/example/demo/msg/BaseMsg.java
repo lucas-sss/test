@@ -3,7 +3,6 @@ package com.example.demo.msg;
 import com.example.demo.utils.MsgUtil;
 
 import java.io.Serializable;
-import java.util.Date;
 
 /**
  * @author liuwei 1215946336@qq.com

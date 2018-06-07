@@ -2,6 +2,7 @@ package com.example.demo.msg;
 
 import com.example.demo.utils.MsgUtil;
 
+import java.io.Serializable;
 import java.util.Date;
 
 /**
@@ -9,18 +10,18 @@ import java.util.Date;
  * @version 1.0
  * @date 2018/4/27 0027
  */
-public class BasicMsg {
+public abstract class BaseMsg implements Serializable {
 
     private String msgId = MsgUtil.getUuid();
 
-    private Date createDate = new Date();
+    private Long createDate = System.currentTimeMillis();
 
-    private String msgBody;
+    private Object msgBody;
 
-    public BasicMsg() {
+    public BaseMsg() {
     }
 
-    public BasicMsg(String msgBody) {
+    public BaseMsg(String msgBody) {
         this.msgId = MsgUtil.getUuid();
     }
 
@@ -28,16 +29,15 @@ public class BasicMsg {
         return msgId;
     }
 
-    public Date getCreateDate() {
+    public Long getCreateDate() {
         return createDate;
     }
 
-    public String getMsgBody() {
+    public Object getMsgBody() {
         return msgBody;
     }
 
-    public void setMsgBody(String msgBody) {
+    public void setMsgBody(Object msgBody) {
         this.msgBody = msgBody;
     }
-
 }

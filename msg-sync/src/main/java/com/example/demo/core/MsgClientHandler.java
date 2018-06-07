@@ -1,5 +1,6 @@
 package com.example.demo.core;
 
+import com.example.demo.msg.BusinessMsg;
 import io.netty.channel.ChannelHandlerAdapter;
 import io.netty.channel.ChannelHandlerContext;
 
@@ -8,23 +9,18 @@ import io.netty.channel.ChannelHandlerContext;
  * @version 1.0
  * @date 2018/4/5 0005
  */
-public class EchoClientHandler extends ChannelHandlerAdapter {
-
-    private byte[] req = null;
+public class MsgClientHandler extends ChannelHandlerAdapter {
 
     @Override
     public void channelActive(ChannelHandlerContext ctx) throws Exception {
 
     }
 
-
     @Override
     public void channelRead(ChannelHandlerContext ctx, Object msg) throws Exception {
+        BusinessMsg businessMsg = (BusinessMsg) msg;
+        System.out.println("接受消息类型：" + businessMsg.getMsgType() + ",消息体：" + businessMsg.getMsgBody());
 
-        String resp = (String) msg;
-
-        System.out.println("client recive body:" + resp);
-//        ctx.close();
     }
 
     @Override

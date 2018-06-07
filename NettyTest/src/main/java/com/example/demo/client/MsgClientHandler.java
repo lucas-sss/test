@@ -1,5 +1,6 @@
 package com.example.demo.client;
 
+import com.example.demo.msg.RegisteMsg;
 import com.example.demo.utils.MsgSendUtil;
 import io.netty.buffer.ByteBuf;
 import io.netty.buffer.Unpooled;
@@ -20,17 +21,15 @@ public class EchoClientHandler extends ChannelHandlerAdapter {
 
         MsgSendUtil.setContext(ctx);
 
+        RegisteMsg registeMsg = new RegisteMsg();
+
+        registeMsg.setMsgBody("channel_lable");
 
 
-        ByteBuf msg = null;
-        for (int i = 0; i < 100; i++) {
-
-            req = ("我发送消息" + i + System.getProperty("line.separator")).getBytes();
-            msg = Unpooled.buffer(req.length);
-            msg.writeBytes(req);
-            ctx.writeAndFlush(msg);
-        }
-
+        req = ("channel_lable" + System.getProperty("line.separator")).getBytes();
+        ByteBuf msg = Unpooled.buffer(req.length);
+        msg.writeBytes(req);
+        ctx.writeAndFlush(msg);
     }
 
 

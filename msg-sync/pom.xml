@@ -41,6 +41,22 @@
 		</dependency>
 
 
+
+		<!-- https://mvnrepository.com/artifact/com.fasterxml.jackson.core/jackson-databind -->
+		<dependency>
+			<groupId>com.fasterxml.jackson.core</groupId>
+			<artifactId>jackson-databind</artifactId>
+			<version>2.9.0</version>
+		</dependency>
+
+		<!-- https://mvnrepository.com/artifact/com.fasterxml.jackson.core/jackson-annotations -->
+		<dependency>
+			<groupId>com.fasterxml.jackson.core</groupId>
+			<artifactId>jackson-annotations</artifactId>
+			<version>2.9.0</version>
+		</dependency>
+
+
 		<!-- https://mvnrepository.com/artifact/io.netty/netty-all -->
 		<dependency>
 			<groupId>io.netty</groupId>
@@ -62,7 +78,98 @@
 			<plugin>
 				<groupId>org.springframework.boot</groupId>
 				<artifactId>spring-boot-maven-plugin</artifactId>
+				<configuration>
+					<fork>false</fork>
+				</configuration>
+				<executions>
+					<execution>
+						<goals>
+							<goal>repackage</goal>
+						</goals>
+						<configuration>
+							<skip>true</skip>
+						</configuration>
+					</execution>
+				</executions>
 			</plugin>
+
+
+			<plugin>
+				<groupId>org.codehaus.mojo</groupId>
+				<artifactId>appassembler-maven-plugin</artifactId>
+				<version>2.0.0</version>
+				<configuration>
+					<!-- 根目录 -->
+					<assembleDirectory>${project.build.directory}/msg-sync</assembleDirectory>
+					<!-- 打包的jar，以及maven依赖的jar放到这个目录里面 -->
+					<repositoryName>lib</repositoryName>
+					<!-- 可执行脚本的目录 -->
+					<binFolder>bin</binFolder>
+					<!-- 配置文件的目标目录 -->
+					<configurationDirectory>conf</configurationDirectory>
+					<!-- 拷贝配置文件到上面的目录中 -->
+					<copyConfigurationDirectory>true</copyConfigurationDirectory>
+					<!-- 从哪里拷贝配置文件 (默认src/main/config) -->
+					<configurationSourceDirectory>src/main/resources/</configurationSourceDirectory>
+					<!-- lib目录中jar的存放规则，默认是${groupId}/${artifactId}的目录格式，flat表示直接把jar放到lib目录 -->
+					<repositoryLayout>flat</repositoryLayout>
+					<encoding>UTF-8</encoding>
+					<logsDirectory>logs</logsDirectory>
+					<tempDirectory>tmp</tempDirectory>
+					<daemons>
+						<daemon>
+							<id>msg-sync</id>
+							<mainClass>com.example.demo.MsgSyncApplication</mainClass>
+							<platforms>
+								<platform>jsw</platform>
+							</platforms>
+							<generatorConfigurations>
+								<generatorConfiguration>
+									<generator>jsw</generator>
+									<includes>
+										<include>linux-x86-32</include>
+										<include>linux-x86-64</include>
+										<include>windows-x86-32</include>
+										<include>windows-x86-64</include>
+										<include>macosx-universal-64</include>
+										<include>macosx-universal-32</include>
+									</includes>
+									<configuration>
+										<property>
+											<name>configuration.directory.in.classpath.first</name>
+											<value>conf</value>
+										</property>
+										<property>
+											<name>wrapper.ping.timeout</name>
+											<value>120</value>
+										</property>
+										<property>
+											<name>set.default.REPO_DIR</name>
+											<value>lib</value>
+										</property>
+										<property>
+											<name>wrapper.logfile</name>
+											<value>logs/msg-sync.log</value>
+										</property>
+									</configuration>
+								</generatorConfiguration>
+							</generatorConfigurations>
+							<jvmSettings>
+								<!-- jvm参数 -->
+								<systemProperties>
+									<!--<systemProperty>java.rmi.server.hostname=112.74.77.9</systemProperty>
+									<systemProperty>com.sun.management.jmxremote.port=9086</systemProperty>
+									<systemProperty>com.sun.management.jmxremote.authenticate=false</systemProperty>
+									<systemProperty>com.sun.management.jmxremote.ssl=false</systemProperty>
+									<systemProperty>-classpath ${basedir}/lib/test-1.0.jar</systemProperty>-->
+								</systemProperties>
+							</jvmSettings>
+						</daemon>
+					</daemons>
+				</configuration>
+			</plugin>
+
+
 		</plugins>
 	</build>
 

@@ -20,11 +20,19 @@
 
         <dependency>
             <!-- groupId artifactId 可以随便写 -->
-            <groupId>tt</groupId>
-            <artifactId>tt</artifactId>
+            <groupId>bluecove</groupId>
+            <artifactId>bluecove</artifactId>
             <version>1.0</version>
             <scope>system</scope>
             <systemPath>${project.basedir}/lib/bluecove-2.1.1-SNAPSHOT.jar</systemPath>
+        </dependency>
+        <dependency>
+            <!-- groupId artifactId 可以随便写 -->
+            <groupId>bluecove-bluez</groupId>
+            <artifactId>bluecove-bluez</artifactId>
+            <version>1.0</version>
+            <scope>system</scope>
+            <systemPath>${project.basedir}/lib/bluecove-bluez-2.1.1-SNAPSHOT.jar</systemPath>
         </dependency>
     </dependencies>
 

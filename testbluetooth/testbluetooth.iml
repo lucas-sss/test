@@ -13,10 +13,20 @@
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
     <orderEntry type="library" name="lib" level="project" />
+    <orderEntry type="library" name="Maven: commons-io:commons-io:2.6" level="project" />
     <orderEntry type="module-library">
-      <library name="Maven: tt:tt:1.0">
+      <library name="Maven: bluecove:bluecove:1.0">
         <CLASSES>
           <root url="jar://$MODULE_DIR$/lib/bluecove-2.1.1-SNAPSHOT.jar!/" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES />
+      </library>
+    </orderEntry>
+    <orderEntry type="module-library">
+      <library name="Maven: bluecove-bluez:bluecove-bluez:1.0">
+        <CLASSES>
+          <root url="jar://$MODULE_DIR$/lib/bluecove-bluez-2.1.1-SNAPSHOT.jar!/" />
         </CLASSES>
         <JAVADOC />
         <SOURCES />

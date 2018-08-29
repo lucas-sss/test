@@ -1,6 +1,8 @@
 package cn.onearth.alltest.testbluetooth;
 
 
+import org.bluez.v3.Adapter;
+
 import javax.bluetooth.DiscoveryAgent;
 import javax.bluetooth.LocalDevice;
 import javax.microedition.io.Connector;
@@ -16,7 +18,7 @@ import java.util.concurrent.Executors;
  * @version 1.0
  * @date 2018/7/21
  */
-public class BuletoothService implements Runnable {
+public class BluetoothService implements Runnable {
 
     private static volatile boolean stopFlag = false;
 
@@ -34,7 +36,8 @@ public class BuletoothService implements Runnable {
     private final static ExecutorService service = Executors.newCachedThreadPool();
 
 
-    public BuletoothService() {
+    public BluetoothService() {
+
 
         try {
             localDevice = LocalDevice.getLocalDevice();
@@ -78,7 +81,6 @@ public class BuletoothService implements Runnable {
                         inStr = new String(acceptdByteArray, 0, length);
                         System.out.println(inStr);
                     }
-
                 }
             }
         } catch (IOException e) {
@@ -102,7 +104,7 @@ public class BuletoothService implements Runnable {
 
     public static void main(String[] args) throws Exception {
 
-        BuletoothService buletoothService = new BuletoothService();
+        BluetoothService bluetoothService = new BluetoothService();
         Thread.sleep(99999);
     }
 }
